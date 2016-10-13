@@ -30,7 +30,6 @@ task genJava (type: GenApi, group: taskGroup) {
     language = "Java"
     apiDestDir = file('../../RaptureAPI')
     kernelDestDir = file('../../RaptureCore')
-    webDestDir = file('../../RaptureCore')
     mainApiFile = "api/rapt.api"
 }
 
@@ -134,8 +133,6 @@ public class GenApi extends DefaultTask {
 
     @Optional @OutputDirectory
     File kernelDestDir
-    @Optional @OutputDirectory
-    File webDestDir 
     @OutputDirectory
     File apiDestDir
 
@@ -149,13 +146,16 @@ public class GenApi extends DefaultTask {
         if (mainApiFile == null) {
             throw new RuntimeException("mainApiFile must be defined")
         }
-
         def kernelDestPath;
-        def webDestPath;
         def apiDestPath;
-        kernelDestPath = kernelDestDir != null ? kernelDestDir.absolutePath : new File(apiDestDir, language).absolutePath;
-        webDestPath = webDestDir != null ? webDestDir.absolutePath : new File(apiDestDir, language).absolutePath;
-        apiDestPath = apiDestDir.absolutePath;
+        if (kernelDestDir != null) {
+            kernelDestPath = kernelDestDir.absolutePath;
+            apiDestPath = apiDestDir.absolutePath;
+        } else {
+            kernelDestPath = new File(apiDestDir, language).absolutePath;
+            apiDestPath = new File(apiDestDir, language).absolutePath;
+        }
+
         println(String.format("kernelDestPath=%s, apiDestPath=%s", kernelDestPath, apiDestPath))
 
         def javaArgs = [
@@ -167,8 +167,6 @@ public class GenApi extends DefaultTask {
                 kernelDestPath,
                 '-a',
                 apiDestPath,
-                '-w',
-                webDestPath,
                 '-g',
                 getGenType()
         ]

@@ -36,10 +36,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
+import rapture.common.exception.ExceptionToString;
+
 import com.incapture.rapgen.TParser.hmxdef_return;
 import com.incapture.rapgen.reader.ResourceBasedApiReader;
-
-import rapture.common.exception.ExceptionToString;
 
 class GenApi {
 
@@ -48,7 +48,6 @@ class GenApi {
         options.addOption("l", true, "Language to generate");
         options.addOption("o", true, "Output root folder for kernel files");
         options.addOption("a", true, "Output root folder for api files");
-        options.addOption("w", true, "Output root folder for web files");
         options.addOption("d", true, "Template dir to use (use either this or 't')");
         options.addOption("t", true, "Template file to use (use either this or 'd')");
         options.addOption("g", true, "The type of grammar to generate, current options are 'SDK' or 'API'");
@@ -62,7 +61,6 @@ class GenApi {
             String mainApiFile = cmd.getOptionValue("mainApiFile");
             String outputKernelFolder = cmd.getOptionValue('o');
             String outputApiFolder = cmd.getOptionValue('a');
-            String outputWebFolder = cmd.getOptionValue('w');
             String codeSamplesJava = cmd.getOptionValue("codeSamplesJava");
             String codeSamplesPython = cmd.getOptionValue("codeSamplesPython");
 
@@ -154,11 +152,8 @@ class GenApi {
                 ((TTreeCurtisDoc) walker).apiGen();
             }
             // Now dump the files out
-            System.out.println("Genereated source output locations:");
-            System.out.println(String.format("kernel: [%s]", outputKernelFolder));
-            System.out.println(String.format("api: [%s]", outputApiFolder));
-            System.out.println(String.format("web: [%s]", outputWebFolder));
-            walker.dumpFiles(outputKernelFolder, outputApiFolder, outputWebFolder);
+            System.out.println("Dumping files to " + outputKernelFolder + " and " + outputApiFolder);
+            walker.dumpFiles(outputKernelFolder, outputApiFolder);
 
         } catch (ParseException e) {
             System.err.println("Error parsing command line - " + e.getMessage());
