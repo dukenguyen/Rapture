@@ -21,17 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package reflex.value.internal;
 
-import reflex.value.ImmutableReflexValue;
+timezone = "America/Los_Angeles";
+now = time();
+day = time('23:59:59');
+yesterday = cast(now, 'number') - cast (day, 'number');
+println('YESTERDAY '+ dateformat(yesterday, 'yyyyMMdd', timezone));
+println('YESTERDAY2 '+ dateformat(yesterday, 'yyyy-MM-dd', timezone));
+println('TODAY '+ dateformat(now, 'yyyyMMdd', timezone));
+println('TODAY2 '+ dateformat(now, 'yyyy-MM-dd', timezone));
+println('TIME '+ dateformat(now, 'hhmmss', timezone));
 
-public class ReflexInternalValue extends ImmutableReflexValue {
-
-    public ReflexInternalValue(int lineNumber, Internal v) {
-        super(lineNumber, v);
-    }
-
-    public ReflexInternalValue(Internal v) {
-        super(v);
-    }
-}
+return true;
